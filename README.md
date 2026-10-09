@@ -1,18 +1,28 @@
-# EE3660 Introduction to Digital Signal Processing - HW6: Computer-Based Exercises - README
+# 數位訊號處理與最佳化濾波器設計：雙音多頻解碼與最佳化 FIR 濾波器專案
 
-本專案為國立清華大學電機系課程「數位訊號處理概論」（EE3660, Prof. Yi-Wen Liu）作業六（HW6）之電腦實作與模擬報告。本篇內容聚焦於**雙音多頻（DTMF）訊號之短時距傅立葉變換（STFT）與資訊檢索**，以及**基於 Parks-McClellan 演算法的最佳化 FIR 濾波器設計**。
+本專案聚焦於雙音多頻（DTMF）訊號之短時距傅立葉變換（STFT）與資訊檢索，以及基於 Parks-McClellan 演算法的最佳化 FIR 濾波器設計之電腦實作與模擬分析。
 
 ---
 
 ## 1. 資訊檢索：雙音多頻 (DTMF) 訊號解碼與 STFT 分析
-執行 `<DSP2025_HW5_DualTones.m>` 進行 3D 頻譜圖（Spectrogram）視覺化與互動分析。
 
-* **(a) 視窗長度與類別之影響**
-  * 變換視窗長度與視窗類型（Hann、Rectangular、Blackman），探討其對時頻解析度的影響。
-  * 評估在維持可清楚辨識兩個分離峰值（Two Separated Peaks）的前提下，各視窗類型所能設定的最小視窗極限。
-* **(b) 未知電話號碼解碼 (`unknown_phonenum.wav`)**
-  * 載入檔案 `<unknown_phonenum.wav>`，利用 STFT 頻譜圖對應高頻與低頻群組頻率，解碼出對應的電話號碼序列。
-  * 說明訊號段切割、峰值偵測與對應頻率對照之解碼流程。
+執行 `DSP2025_HW5_DualTones.m` 進行 3D 頻譜圖視覺化與互動分析。
+
+### (a) 視窗長度與類別之影響
+- **視窗長度影響**：隨著視窗長度 L 縮短（測試 160、80 至 40），頻譜峰值會顯著變寬。根據頻率解析度公式 Δf ≈ 1/T，較短的視窗會導致主瓣變寬與嚴重的頻譜洩漏。
+- **解析度極限**：在維持可清楚辨識兩個分離峰值的前提下，不同視窗類型所需的最小視窗長度分別為：矩形窗（Rectangular, L = 25）、漢寧窗（Hann, L = 44）以及布萊克曼窗（Blackman, L = 52）。
+- **效能取捨**：矩形窗具備最高的頻率解析度但旁瓣洩漏高；布萊克曼窗旁瓣抑制最佳但需要最長的視窗；漢寧窗（L = 44）則在解析度與洩漏抑制之間取得絕佳平衡。
+
+| L = 160 (0.02s) | L = 80 (0.01s) | L = 40 (0.005s) |
+| :---: | :---: | :---: |
+| ![L160](dtmf_spectrogram_3d.png)<br>*圖 1：高解析度時頻分佈* | ![L80](dtmf_spectrogram_3d.png)<br>*圖 2：頻峰開始變寬* | ![L40](dtmf_spectrogram_3d.png)<br>*圖 3：峰值合併難以辨識* |
+
+---
+
+### (b) 未知電話號碼解碼 (`unknown_phonenum.wav`)
+- **解碼流程**：載入未知音檔後，利用 STFT 頻譜圖擷取八個不同時間點的雙音頻率組合（F<sub>1</sub> 與 F<sub>2</sub>），並對照標準 DTMF 頻率矩陣進行解碼。
+- **自動化機制**：透過 MATLAB 的 `findpeaks` 演算法提取峰值，並導入去彈跳（De-bouncing）邏輯（要求檢測到的數字必須持續跨越多個連續時間影格），藉此有效過濾暫態雜訊。
+- **解碼結果**：三種檢測方法（手動頻譜檢查、自動峰值檢測、聽覺辨識）皆一致指向解碼序列為 **{3, 1, 4, 1, 5, 9, 2, 7}**。
 
 > 🎵 **音檔播放與測試 (Audio Playback)**
 > <audio controls>
@@ -20,23 +30,38 @@
 >     您的瀏覽器不支援音訊播放標籤。
 > </audio>
 
-> 📊 **DTMF 頻譜圖與 3D 檢視範例**
-> ![DTMF Spectrogram](dtmf_spectrogram_3d.png)
-> *圖 1：透過 3D 頻譜圖觀察 DTMF 雙音頻率在時頻域上的能量分佈與峰值分離狀況。*
+| 未知音檔整體頻譜與時間切片分析 |
+| :---: |
+| ![Unknown Phonenum Spectrogram](dtmf_spectrogram_3d.png)<br>*圖 4：`unknown_phonenum.wav` 之整體 STFT 頻譜與各時間點頻峰對應圖* |
 
 ---
 
-## 2. Optimal FIR 最佳化濾波器設計
-執行 `<myTestPM.m>`（內含 `<myChebyPol.m>`）以觀察 Parks-McClellan 演算法如何透過迭代逼近等漣波（Equal-Ripple）低通濾波器之最佳設計。
+## 2. 最佳化 FIR 濾波器設計 (Optimal FIR Design via Parks-McClellan)
 
-* **(a) 初始交替點對迭代次數之影響**
-  * 修改程式碼第 10 行之初始交替點（Alternating Points）猜測值。
-  * 討論不同的初始猜測如何影響演算法收斂所需的迭代次數（Iteration Steps）。
-* **(b) 截止頻率 $\omega_c$ 對最大近似誤差的影響**
-  * 變動截止頻率 $\omega_c$，探討其對最終設計之最大近似誤差（即漣波大小，Ripple Size）的影響。
-* **(c) 迭代過程中 $\Delta$ 值增加之原理解析**
-  * 探討並解釋為何在 Parks-McClellan 演算法的迭代過程中，$\Delta$ 值會隨著步驟逐次增加的數學與物理意義。
+執行 `myTestPM.m`（內含 `myChebyPol.m`）以觀察 Parks-McClellan 演算法如何透過迭代逼近等漣波（Equal-Ripple）低通濾波器。
 
-> 📈 **Parks-McClellan 迭代收斂與頻率響應圖**
-> ![Parks-McClellan Convergence](pm_filter_response.png)
-> *圖 2：Parks-McClellan 等漣波濾波器設計之頻率響應與最大近似誤差收斂情形。*
+### (a) 初始交替點對迭代次數之影響
+- **實驗配置**：測試三種不同的初始交替點猜測配置（標準 9 點、密集 12 點、極密集 16 點），收斂容忍值設定為 tol = 1e-6。
+- **結果與權衡**：點數增加提供了更多自由度，能有效降低最大近似誤差 δ（使頻率響應更平坦），但由於搜尋空間維度增加，所需的迭代次數也隨之增加（標準 9 點需 6 次迭代、密集 12 點需 8 次、極密集 16 點需 9 次）。
+
+| 9 點配置 (δ = 0.2213) | 12 點配置 (δ = 0.1656) | 16 點配置 (δ = 0.1094) |
+| :---: | :---: | :---: |
+| ![9pt](pm_filter_response.png)<br>*圖 5：標準 9 點迭代收斂* | ![12pt](pm_filter_response.png)<br>*圖 6：密集 12 點迭代收斂* | ![16pt](pm_filter_response.png)<br>*圖 7：極密集 16 點迭代收斂* |
+
+---
+
+### (b) 截止頻率 ω<sub>c</sub> 對最大近似誤差的影響
+- **參數掃描**：固定阻帶邊界 ω<sub>s</sub> = 0.45π，將截止頻率 ω<sub>c</sub> 在 0.35π 至 0.44π 之間進行參數掃描。
+- **誤差變化**：隨著 ω<sub>c</sub> 增加，通帶變寬、過渡頻寬縮小，最大近似誤差 δ 呈現單調遞增，這是因為固定階數下必須在較寬頻段內維持等漣波特性所致。
+- **收斂穩定性**：在整個掃描過程中，迭代次數穩定維持在 6 次，顯示 Parks-McClellan 演算法在此結構下具備極佳的收斂強健性。
+
+| 最大近似誤差 δ 與 ω<sub>c</sub> 之關係 | 迭代次數與 ω<sub>c</sub> 之關係 |
+| :---: | :---: |
+| ![Delta vs wc](pm_filter_response.png)<br>*圖 8：最大近似誤差 δ 隨截止頻率增加而上升* | ![Iterations vs wc](pm_filter_response.png)<br>*圖 9：收斂迭代次數維持穩定* |
+
+---
+
+### (c) 迭代過程中 δ 值增加之原理解析
+- **現象解釋**：在 Parks-McClellan 演算法的初始迭代步驟中，最大近似誤差 δ 值會呈現上升趨勢，這是 Remez 交換過程朝向全域極大極小（Minimax）解邁進的必然特性。
+- **理論基礎**：根據切比雪夫交替定理（Chebyshev Alternation Theorem），若初始猜測點集合尚未達到真正的極值點，則假設當前較小的誤差為全域最佳解將導致矛盾（由多項式最高次數與零點個數之矛盾證明）。
+- **總結**：δ 值的上升代表演算法正逐次逼近並識別出誤差函數的真實極值，最終確保設計結果收斂至全域最佳的等漣波（Equiripple）濾波器架構。
