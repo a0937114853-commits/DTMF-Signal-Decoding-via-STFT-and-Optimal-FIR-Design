@@ -15,7 +15,7 @@
 
 | L = 160 (0.02s) | L = 80 (0.01s) | L = 40 (0.005s) |
 | :---: | :---: | :---: |
-| ![L160](dtmf_spectrogram_3d.png)<br>*圖 1：高解析度時頻分佈* | ![L80](dtmf_spectrogram_3d.png)<br>*圖 2：頻峰開始變寬* | ![L40](dtmf_spectrogram_3d.png)<br>*圖 3：峰值合併難以辨識* |
+| ![L160](exercise2/hann0.02L160.png)<br>*圖 1：高解析度時頻分佈* | ![L80](exercise2/hann0.01L80.png)<br>*圖 2：頻峰開始變寬* | ![L40](hann0.005L40.png)<br>*圖 3：峰值合併難以辨識* |
 
 ---
 
