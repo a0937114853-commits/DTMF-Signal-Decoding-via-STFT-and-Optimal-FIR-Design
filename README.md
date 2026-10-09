@@ -30,43 +30,10 @@
 >     您的瀏覽器不支援音訊播放標籤。
 > </audio>
 
-| 未知音檔整體頻譜與時間切片分析 |
-| :---: |
-| ![Unknown Phonenum Spectrogram](dtmf_spectrogram_3d.png)<br>*圖 4：`unknown_phonenum.wav` 之整體 STFT 頻譜與各時間點頻峰對應圖* |
-
----
-
-
-
-
-### (b) 未知電話號碼解碼 (`unknown_phonenum.wav`)
-- **解碼流程**：載入未知音檔後，利用 STFT 頻譜圖擷取八個不同時間點的雙音頻率組合（F<sub>1</sub> 與 F<sub>2</sub>），並對照標準 DTMF 頻率矩陣進行解碼。
-- **自動化機制**：透過 MATLAB 的 `findpeaks` 演算法提取峰值，並導入去彈跳（De-bouncing）邏輯（要求檢測到的數字必須持續跨越多個連續時間影格），藉此有效過濾暫態雜訊。
-- **解碼結果**：三種檢測方法（手動頻譜檢查、自動峰值檢測、聽覺辨識）皆一致指向解碼序列為 **{3, 1, 4, 1, 5, 9, 2, 7}**。
-
-> 🎵 **音檔播放與測試 (Audio Playback)**
-> <audio controls>
->     <source src="unknown_phonenum.wav" type="audio/wav">
->     您的瀏覽器不支援音訊播放標籤。
-> </audio>
-
 #### 1. 整體頻譜概覽 (圖 9)
 | 未知音檔整體 STFT 頻譜圖 |
 | :---: |
 | ![Figure 9: Overall Spectrogram](dtmf_spectrogram_overall.png)<br>*圖 9：Overall spectrogram of the unknown DTMF signal sequence.* |
-
-#### 2. 各時間點獨立頻譜分析細節 (圖 10 至 圖 17)
-以下為八個指定時間點（t = 0.10 s 至 3.63 s）之獨立頻譜分析與峰值檢測圖檔插槽：
-
-| t = 0.10s (圖 10) | t = 0.61s (圖 11) | t = 1.05s (圖 12) | t = 1.51s (圖 13) |
-| :---: | :---: | :---: | :---: |
-| ![Fig 10](exercise2/)<br>*圖 10：t = 0.10s* | ![Fig 11](dtmf_t_0_61.png)<br>*圖 11：t = 0.61s* | ![Fig 12](dtmf_t_1_05.png)<br>*圖 12：t = 1.05s* | ![Fig 13](dtmf_t_1_51.png)<br>*圖 13：t = 1.51s* |
-
-| t = 2.09s (圖 14) | t = 2.63s (圖 15) | t = 3.11s (圖 16) | t = 3.63s (圖 17) |
-| :---: | :---: | :---: | :---: |
-| ![Fig 14](dtmf_t_2_09.png)<br>*圖 14：t = 2.09s* | ![Fig 15](dtmf_t_2_63.png)<br>*圖 15：t = 2.63s* | ![Fig 16](dtmf_t_3_11.png)<br>*圖 16：t = 3.11s* | ![Fig 17](dtmf_t_3_63.png)<br>*圖 17：t = 3.63s* |
-
-*圖 18：Individual spectral analysis at identified time intervals.*
 
 #### 2. 各時間點獨立頻譜分析細節 (圖 10 至 圖 17)
 以下為八個指定時間點（t = 0.10 s 至 3.63 s）之獨立頻譜分析與峰值檢測圖檔插槽：
@@ -80,7 +47,6 @@
 | ![Fig 14](exercise2/t=2.09s,%20Detected%20F1=773Hz,%20F2=1336Hz.png)<br>*圖 14：t = 2.09s* | ![Fig 15](exercise2/t=2.63s,%20Detected%20F1=852Hz,%20F2=1477Hz.png)<br>*圖 15：t = 2.63s* | ![Fig 16](exercise2/t=3.11s,%20Detected%20F1=695Hz,%20F2=1336Hz.png)<br>*圖 16：t = 3.11s* | ![Fig 17](exercise2/t=3.63s,%20Detected%20F1=852Hz,%20F2=1211Hz.png)<br>*圖 17：t = 3.63s* |
 
 *圖 18：Individual spectral analysis at identified time intervals.*
-
 
 #### 3. DTMF 解碼結果總結表
 | 時間 (s) | F<sub>1</sub> (Hz) | F<sub>2</sub> (Hz) | 偵測數字 |
@@ -96,10 +62,6 @@
 
 
 ---
-
-
-
-
 
 
 
