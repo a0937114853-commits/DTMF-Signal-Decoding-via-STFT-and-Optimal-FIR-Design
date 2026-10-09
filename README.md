@@ -46,7 +46,7 @@
 
 | 9 點配置 (δ = 0.2213) | 12 點配置 (δ = 0.1656) | 16 點配置 (δ = 0.1094) |
 | :---: | :---: | :---: |
-| ![9pt](9point_1.png)<br>*圖 5：標準 9 點迭代收斂* | ![12pt](12point_1.png)<br>*圖 6：密集 12 點迭代收斂* | ![16pt](16point_1.png)<br>*圖 7：極密集 16 點迭代收斂* |
+| ![9pt](exercise3/9point_1.png)<br>*圖 5：標準 9 點迭代收斂* | ![12pt](exercise3/12point_1.png)<br>*圖 6：密集 12 點迭代收斂* | ![16pt](exercise3/16point_1.png)<br>*圖 7：極密集 16 點迭代收斂* |
 
 ---
 
@@ -57,7 +57,7 @@
 
 | 最大近似誤差 δ 與 ω<sub>c</sub> 之關係 | 迭代次數與 ω<sub>c</sub> 之關係 |
 | :---: | :---: |
-| ![Delta vs wc](delta.png)<br>*圖 8：最大近似誤差 δ 隨截止頻率增加而上升* | ![Iterations vs wc](iteration.png)<br>*圖 9：收斂迭代次數維持穩定* |
+| ![Delta vs wc](exercise3/delta.png)<br>*圖 8：最大近似誤差 δ 隨截止頻率增加而上升* | ![Iterations vs wc](exercise3/iteration.png)<br>*圖 9：收斂迭代次數維持穩定* |
 
 ---
 
