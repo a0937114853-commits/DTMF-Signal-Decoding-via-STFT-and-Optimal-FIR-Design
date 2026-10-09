@@ -57,7 +57,7 @@
 
 | 最大近似誤差 δ 與 ω<sub>c</sub> 之關係 | 迭代次數與 ω<sub>c</sub> 之關係 |
 | :---: | :---: |
-| ![Delta vs wc](pm_filter_response.png)<br>*圖 8：最大近似誤差 δ 隨截止頻率增加而上升* | ![Iterations vs wc](pm_filter_response.png)<br>*圖 9：收斂迭代次數維持穩定* |
+| ![Delta vs wc](delta.png)<br>*圖 8：最大近似誤差 δ 隨截止頻率增加而上升* | ![Iterations vs wc](iteration.png)<br>*圖 9：收斂迭代次數維持穩定* |
 
 ---
 
