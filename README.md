@@ -33,7 +33,7 @@
 #### 1. 整體頻譜概覽 (圖 9)
 | 未知音檔整體 STFT 頻譜圖 |
 | :---: |
-| ![Figure 9: Overall Spectrogram](dtmf_spectrogram_overall.png)<br>*圖 9：Overall spectrogram of the unknown DTMF signal sequence.* |
+| ![Figure 9: Overall Spectrogram](exercise2/wav.png)<br>*圖 9：Overall spectrogram of the unknown DTMF signal sequence.* |
 
 #### 2. 各時間點獨立頻譜分析細節 (圖 10 至 圖 17)
 以下為八個指定時間點（t = 0.10 s 至 3.63 s）之獨立頻譜分析與峰值檢測圖檔插槽：
